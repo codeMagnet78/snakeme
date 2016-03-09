@@ -1,16 +1,18 @@
-import pygame #This imports all the pygame methods
+import pygame  #This imports all the pygame methods
 
 pygame.init() #This initialize the methods
 
-gameDisplay = pygame.display.set_mode((600,480))
-	#Display setmode sets the screen size
+#Display setmode sets the screen size
+gameDisplay = pygame.display.set_mode((600, 480))
+
+#Display set caption give the name to the window
 pygame.display.set_caption('Snake Me')
-	#Display set caption give the name to the window
-	
+
+
 #Defining colors
-white = (255,255,255)
-red = (255,0,0)
-black = (0,0,0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+black = (0, 0, 0)
 
 #Defining frame
 clock = pygame.time.Clock()
@@ -24,7 +26,7 @@ lead_y_change = 0
 
 gameExit = False
 
-while not gameExit:# This is the main loop
+while not gameExit: #This is the main loop
 	for event in pygame.event.get():# This fetches all the events like keyup, mousemove
 		if event.type == pygame.QUIT:# For all other types of events refer to pygameEvent.txt
 			gameExit = True
@@ -46,7 +48,7 @@ while not gameExit:# This is the main loop
 	lead_y += lead_y_change	# Usign while loop for continuous movement		
 	gameDisplay.fill(white) # this puts the background color
 	pygame.draw.rect(gameDisplay, black, [lead_x,lead_y, 10, 10])
-	pygame.display.update();
+	pygame.display.update()
 	
 	clock.tick(30)# This sets the frames per second
 
