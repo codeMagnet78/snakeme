@@ -130,6 +130,8 @@ def gameLoop():
         #        randAppleX = round(random.randrange(0, displayWidth-blockSize))#/10.0)*10.0
         #        randAppleY = round(random.randrange(0, displayHeight-blockSize))#/10.0)*10.0
         #        snakeLength += 1
+
+
         # cross over code this would ensure cross over works
         if lead_x > randAppleX and lead_x < randAppleX + appleThickness or lead_x + blockSize> randAppleX and lead_x + blockSize < randAppleX + appleThickness:
             if lead_y > randAppleY and lead_y < randAppleY + appleThickness or lead_y + blockSize> randAppleY and lead_y + blockSize < randAppleY + appleThickness:
