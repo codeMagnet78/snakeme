@@ -1,5 +1,6 @@
 import pygame  # This imports all the pygame methods
 import time   # This imports time functions
+import random   # This is random apple apearance on the screen
 
 pygame.init()  # This initialize the methods
 
@@ -17,6 +18,11 @@ font = pygame.font.SysFont(None, 25)
 def messagetoScreen(msg, color):
     screentext = font.render(msg, True, color)
     gameDisplay.blit(screentext, [displayWidth/2, displayHeight/2])
+#Function to draw the snake
+def snake(blockSize, snakeList):
+    for XnY in snakeList:
+        pygame.draw.rect(gameDisplay, green, [XnY[0], XnY[1], blockSize, blockSize])
+
 # Display setmode sets the screen size
 gameDisplay = pygame.display.set_mode((displayWidth, displayHeight))
 
@@ -27,6 +33,7 @@ pygame.display.set_caption('Snake Me')
 white = (255, 255, 255)
 red = (255, 0, 0)
 black = (0, 0, 0)
+green = (0, 155, 0)
 
 # Defining frame
 clock = pygame.time.Clock()
@@ -38,6 +45,14 @@ def gameLoop():
     lead_y = displayHeight / 2
     lead_x_change = 0
     lead_y_change = 0
+
+    #snakeList should not refresh under while loop
+    snakeList = []
+    snakeLength = 1
+
+    # Rounding it to the value to 10 so that it appear correct in aligned to the snake
+    randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0
+    randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0
 
     gameExit = False
     gameOver = False
@@ -82,8 +97,32 @@ def gameLoop():
         lead_x += lead_x_change  # Using while loop for continuous movement
         lead_y += lead_y_change  # Using while loop for continuous movement
         gameDisplay.fill(white)  # This puts the background color
-        pygame.draw.rect(gameDisplay, black, [lead_x, lead_y, blockSize, blockSize])
+        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, blockSize, blockSize])
+
+
+        snakeHead = []
+        snakeHead.append(lead_x)
+        snakeHead.append(lead_y)
+        snakeList.append(snakeHead)
+
+        # This is to control the snakelenght
+        if len(snakeList) > snakeLength:
+            del snakeList[0]
+
+
+        # This is for crashing the snake to itself
+        for eachSegment in snakeList[:-1]:
+            if eachSegment == snakeHead:
+                gameOver = True
+
+
+        snake(blockSize, snakeList)
         pygame.display.update()
+
+        if lead_x == randAppleX and lead_y == randAppleY:
+            randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0
+            randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0
+            snakeLength += 1
 
         clock.tick(fps)  # This sets the frames per second
 
