@@ -51,8 +51,8 @@ def gameLoop():
     snakeLength = 1
 
     # Rounding it to the value to 10 so that it appear correct in aligned to the snake
-    randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0
-    randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0
+    randAppleX = round(random.randrange(0, displayWidth-blockSize))#/10.0)*10.0
+    randAppleY = round(random.randrange(0, displayHeight-blockSize))#/10.0)*10.0
 
     gameExit = False
     gameOver = False
@@ -66,6 +66,9 @@ def gameLoop():
             pygame.display.update()
 
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    gameExit = True
+                    gameOver = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
                         gameExit = True
@@ -97,7 +100,9 @@ def gameLoop():
         lead_x += lead_x_change  # Using while loop for continuous movement
         lead_y += lead_y_change  # Using while loop for continuous movement
         gameDisplay.fill(white)  # This puts the background color
-        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, blockSize, blockSize])
+
+        appleThickness = 30
+        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, appleThickness, appleThickness])
 
 
         snakeHead = []
@@ -119,10 +124,18 @@ def gameLoop():
         snake(blockSize, snakeList)
         pygame.display.update()
 
-        if lead_x == randAppleX and lead_y == randAppleY:
-            randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0
-            randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0
-            snakeLength += 1
+        #if lead_x == randAppleX and lead_y == randAppleY:
+        #if lead_x >= randAppleX and lead_x <= randAppleX + appleThickness:
+        #    if lead_y >= randAppleY and lead_y <= randAppleY + appleThickness:
+        #        randAppleX = round(random.randrange(0, displayWidth-blockSize))#/10.0)*10.0
+        #        randAppleY = round(random.randrange(0, displayHeight-blockSize))#/10.0)*10.0
+        #        snakeLength += 1
+        # cross over code this would ensure cross over works
+        if lead_x > randAppleX and lead_x < randAppleX + appleThickness or lead_x + blockSize> randAppleX and lead_x + blockSize < randAppleX + appleThickness:
+            if lead_y > randAppleY and lead_y < randAppleY + appleThickness or lead_y + blockSize> randAppleY and lead_y + blockSize < randAppleY + appleThickness:
+                randAppleX = round(random.randrange(0, displayWidth-blockSize))#/10.0)*10.0
+                randAppleY = round(random.randrange(0, displayHeight-blockSize))#/10.0)*10.0
+                snakeLength += 1
 
         clock.tick(fps)  # This sets the frames per second
 
