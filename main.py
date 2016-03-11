@@ -7,20 +7,42 @@ pygame.init()  # This initialize the methods
 # Defining display variable
 displayWidth = 600
 displayHeight = 480
+
 # Defining block and frame variables
-blockSize = 10
+blockSize = 29
 fps = 15
+
+direction = "right"
 
 # Rendering a font
 font = pygame.font.SysFont(None, 25)
 
+#this is to center the text after game is over
+def text_objects(text, color):
+    textSurface = font.render(text, True, color)
+    return textSurface, textSurface.get_rect()
+
 #Function for message display before quit
 def messagetoScreen(msg, color):
-    screentext = font.render(msg, True, color)
-    gameDisplay.blit(screentext, [displayWidth/2, displayHeight/2])
+    #screentext = font.render(msg, True, color)
+    #gameDisplay.blit(screentext, [displayWidth/2, displayHeight/2])
+    textSurface, textRect = text_objects(msg, color)
+    textRect.center = (displayWidth / 2), (displayHeight / 2)
+    gameDisplay.blit(textSurface, textRect)
+
+
 #Function to draw the snake
 def snake(blockSize, snakeList):
-    for XnY in snakeList:
+    if direction == "right":
+        head = pygame.transform.rotate(img, 270)
+    elif direction == "left":
+        head = pygame.transform.rotate(img, 90)
+    elif direction == "up":
+        head = img
+    elif direction == "down":
+        head = pygame.transform.rotate(img, 180)
+    gameDisplay.blit(head, (snakeList[-1][0], snakeList[-1][1]))
+    for XnY in snakeList[:-1]:
         pygame.draw.rect(gameDisplay, green, [XnY[0], XnY[1], blockSize, blockSize])
 
 # Display setmode sets the screen size
@@ -29,17 +51,25 @@ gameDisplay = pygame.display.set_mode((displayWidth, displayHeight))
 # Display set caption give the name to the window
 pygame.display.set_caption('Snake Me')
 
+
+img = pygame.image.load('snakehead2.png')
+
+
 # Defining colors
 white = (255, 255, 255)
 red = (255, 0, 0)
 black = (0, 0, 0)
-green = (0, 155, 0)
+green = (42, 132, 7)
 
 # Defining frame
 clock = pygame.time.Clock()
 
 
 def gameLoop():
+
+    #Global direction
+
+    global direction
     # Defining the snake head
     lead_x = displayWidth / 2
     lead_y = displayHeight / 2
@@ -82,15 +112,19 @@ def gameLoop():
                 gameExit = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
+                    direction = "left"
                     lead_x_change = -blockSize
                     lead_y_change = 0
                 elif event.key == pygame.K_RIGHT:
+                    direction = "right"
                     lead_x_change = blockSize
                     lead_y_change = 0
                 elif event.key == pygame.K_UP:
+                    direction = "up"
                     lead_y_change = -blockSize
                     lead_x_change = 0
                 elif event.key == pygame.K_DOWN:
+                    direction = "down"
                     lead_y_change = blockSize
                     lead_x_change = 0
 
