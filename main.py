@@ -17,7 +17,7 @@ direction = "right"
 # Rendering a font
 font = pygame.font.SysFont(None, 25)
 
-#this is to center the text after game is over
+#this is to center the text after game is over.
 def text_objects(text, color):
     textSurface = font.render(text, True, color)
     return textSurface, textSurface.get_rect()
